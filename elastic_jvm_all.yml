@@ -1,0 +1,27 @@
+---
+- hosts: masters
+  tasks:
+    - name: update jvms
+      lineinfile: 
+        path: /home/elastic/elasticsearch-7.8.0/config/jvm.options
+        regexp: '-Xms1g'
+        line: '-Xms768m'
+    - name: update jvmx
+      lineinfile: 
+        path: /home/elastic/elasticsearch-7.8.0/config/jvm.options
+        regexp: '-Xmx1g'
+        line: '-Xmx768m'
+
+
+- hosts: data
+  tasks:
+    - name: update jvms
+      lineinfile: 
+        path: /home/elastic/elasticsearch-7.8.0/config/jvm.options
+        regexp: '-Xms1g'
+        line: '-Xms2g'
+    - name: update jvmx
+      lineinfile: 
+        path: /home/elastic/elasticsearch-7.8.0/config/jvm.options
+        regexp: '-Xmx1g'
+        line: '-Xmx2g'

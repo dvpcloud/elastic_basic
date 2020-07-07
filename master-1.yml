@@ -1,0 +1,7 @@
+my_application: cluster-1
+node: master-1
+zone: 1
+master: true
+ingest: false
+data: false
+temp: none

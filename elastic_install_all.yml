@@ -1,0 +1,42 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+  - name: add group elastic
+    group:
+      name: elastic
+      state: present
+      system: yes 
+  - name: update elastic user
+    user:
+      name: elastic
+      append: yes
+      group: elastic
+      state: present           
+  - name: update line /etc/security/limits.conf
+    lineinfile:
+      path: /etc/security/limits.conf
+      line: elastic - nofile 65536
+      insertafter: EOF
+      state: present
+  - name: update sysctl
+    sysctl:
+      name: vm.max_map_count
+      value: '262144'
+      reload: yes
+    ignore_errors: yes
+  - name: 
+    get_url:
+      url: https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.8.0-linux-x86_64.tar.gz
+      dest: /home/elastic
+  - name: unarchive elastic tar
+    unarchive:
+      remote_src: yes
+      src: /home/elastic/elasticsearch-7.8.0-linux-x86_64.tar.gz
+      dest: /home/elastic
+      owner: elastic
+      group: elastic
+  - name: remove tar file
+    file: 
+      path: /home/elastic/elasticsearch-7.8.0-linux-x86_64.tar.gz
+      state: absent

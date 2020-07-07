@@ -1,0 +1,49 @@
+---
+- hosts: data1
+  become: yes
+  gather_facts: yes    
+  tasks:
+  - name: include variable file
+    include_vars:
+      file: data-1.yml
+    when:  inventory_hostname == "data1"
+  - name: update elastic search config for master nodes   
+    template:
+      src: elasticsearch.j2
+      dest: /home/elastic/elasticsearch-7.8.0/config/elasticsearch.yml 
+  - name: output variables
+    debug: 
+      msg: "{{ hostvars[inventory_hostname].ansible_hostname }}"
+
+- hosts: data2
+  become: yes
+  gather_facts: yes    
+  tasks:
+  - name: include variable file
+    include_vars:
+      file: data-2.yml
+    when:  inventory_hostname == "data2"
+  - name: update elastic search config for master nodes   
+    template:
+      src: elasticsearch.j2
+      dest: /home/elastic/elasticsearch-7.8.0/config/elasticsearch.yml 
+  - name: output variables
+    debug: 
+      msg: "{{ hostvars[inventory_hostname].ansible_hostname }}"
+
+- hosts: data3
+  become: yes
+  gather_facts: yes    
+  tasks:
+  - name: include variable file
+    include_vars:
+      file: data-3.yml
+    when:  inventory_hostname == "data3"
+  - name: update elastic search config for master nodes   
+    template:
+      src: elasticsearch.j2
+      dest: /home/elastic/elasticsearch-7.8.0/config/elasticsearch.yml 
+  - name: output variables
+    debug: 
+      msg: "{{ hostvars[inventory_hostname].ansible_hostname }}"
+    
